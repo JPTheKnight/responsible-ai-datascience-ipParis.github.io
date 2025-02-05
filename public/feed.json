@@ -16,6 +16,21 @@
 
     
     {
+      "id": "196627e522f81da6fa6f09db94b8f370926e163d",
+      "title": "First Post",
+      "summary": "",
+      "content_text": "",
+      "content_html": "",
+      "url": "http://localhost:1313/posts/first-post/",
+      "date_published": "5026-05-09T230:55:00+01:00",
+      "date_modified": "5026-05-09T230:55:00+01:00",
+      "author": {
+        "name": "Students from M2 Data Science IP Paris",
+        "url": "http://localhost:1313/"
+      }
+    },
+    
+    {
       "id": "ae2f64cac6ac9f6d89cf77b7ba0c9541c49ea196",
       "title": "Axiomatic Explanations for Visual Search, Retrieval and Similarity Learning",
       "summary": "",
