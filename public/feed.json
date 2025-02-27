@@ -16,14 +16,14 @@
 
     
     {
-      "id": "196627e522f81da6fa6f09db94b8f370926e163d",
-      "title": "First Post",
+      "id": "41f168358c0b82ee745541b18aeca12d79dccd3b",
+      "title": "Understanding Visual Feature Reliance through the Lens of Complexity",
       "summary": "",
-      "content_text": "Some stupid test post\n",
-      "content_html": "\u003cp\u003eSome stupid test post\u003c/p\u003e\n",
-      "url": "http://localhost:1313/posts/first-post/",
-      "date_published": "5026-05-09T230:55:00+01:00",
-      "date_modified": "5026-05-09T230:55:00+01:00",
+      "content_text": "Testing something here\n",
+      "content_html": "\u003cp\u003eTesting something here\u003c/p\u003e\n",
+      "url": "http://localhost:1313/posts/understanding_visual_feature_reliance_through_the_lens_of_complexity/",
+      "date_published": "27026-27-09T223:2727:00+01:00",
+      "date_modified": "27026-27-09T223:2727:00+01:00",
       "author": {
         "name": "Students from M2 Data Science IP Paris",
         "url": "http://localhost:1313/"
