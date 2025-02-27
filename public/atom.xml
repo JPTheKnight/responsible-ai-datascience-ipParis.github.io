@@ -2506,7 +2506,7 @@ MathJax.Hub.Config({
 &lt;li&gt;&lt;a href=&#34;#conclusion&#34;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+&lt;h1 id=&#34;introduction&#34;&gt;1- Introduction&lt;/h1&gt;
 &lt;p&gt;Deep learning models rely on diverse feature sets to make predictions. Recent research highlights a bias towards simpler features, which may contribute to shortcut learning in vision models. However, a rigorous quantitative analysis of feature complexity has been lacking.&lt;/p&gt;
 &lt;p&gt;This blog post explores a new metric based on &lt;strong&gt;V-information&lt;/strong&gt;, a measure that considers computational constraints when quantifying feature complexity. Using this metric, researchers analyzed &lt;strong&gt;10,000 features&lt;/strong&gt; extracted from an ImageNet-trained ResNet50 model to answer the following questions:&lt;/p&gt;
 &lt;ol&gt;
@@ -2516,7 +2516,7 @@ MathJax.Hub.Config({
 &lt;li&gt;&lt;strong&gt;How does feature complexity influence model decision-making?&lt;/strong&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;hr&gt;
-&lt;h1 id=&#34;feature-complexity-and-v-information&#34;&gt;Feature Complexity and V-Information&lt;/h1&gt;
+&lt;h1 id=&#34;feature-complexity-and-v-information&#34;&gt;2- Feature Complexity and V-Information&lt;/h1&gt;
 &lt;p&gt;Feature complexity is traditionally difficult to measure. Standard measures like Shannon’s mutual information do not account for computational effort required to extract a feature. &lt;strong&gt;V-Information&lt;/strong&gt; addresses this by introducing computational constraints:&lt;/p&gt;
 &lt;p&gt;$$
 IV(x \to z) = H_V(z) - H_V(z|x)
@@ -2528,7 +2528,7 @@ $$&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;Using this metric, we can evaluate the complexity of features across different layers of a ResNet50 model trained on ImageNet.&lt;/p&gt;
 &lt;hr&gt;
-&lt;h1 id=&#34;understanding-the-spectrum-of-simple-to-complex-features&#34;&gt;Understanding the Spectrum of Simple-to-Complex Features&lt;/h1&gt;
+&lt;h1 id=&#34;understanding-the-spectrum-of-simple-to-complex-features&#34;&gt;3- Understanding the Spectrum of Simple-to-Complex Features&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;Image placeholder: Visualization of feature complexity spectrum.&lt;/strong&gt;&lt;/p&gt;
 &lt;h3 id=&#34;simple-features&#34;&gt;Simple Features:&lt;/h3&gt;
 &lt;ul&gt;
