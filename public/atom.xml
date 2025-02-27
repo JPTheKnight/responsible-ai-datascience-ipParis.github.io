@@ -7,21 +7,11 @@
     
     <language>en</language>
     <copyright>Copyright 2025, Calvin Tran</copyright>
-    <lastBuildDate>Thu, 27 Feb 2025 19:23:01 +0100</lastBuildDate>
+    <lastBuildDate>Thu, 28 Mar 2024 05:58:39 +0100</lastBuildDate>
     <generator>Hugo - gohugo.io</generator>
     <docs>http://cyber.harvard.edu/rss/rss.html</docs>
     <atom:link href="http://localhost:1313//atom.xml" rel="self" type="application/atom+xml"/>
     
-    
-    <item>
-      <title>Understanding Visual Feature Reliance through the Lens of Complexity</title>
-      <link>http://localhost:1313/posts/understanding_visual_feature_reliance_through_the_lens_of_complexity/</link>
-      <description>&lt;p&gt;Testing something here&lt;/p&gt;
-</description>
-      <author>Students from M2 Data Science IP Paris</author>
-      <guid>http://localhost:1313/posts/understanding_visual_feature_reliance_through_the_lens_of_complexity/</guid>
-      <pubDate>Thu, 27 Feb 2025 19:23:01 +0100</pubDate>
-    </item>
     
     <item>
       <title>Axiomatic Explanations for Visual Search, Retrieval and Similarity Learning</title>
@@ -2485,6 +2475,121 @@ $$&lt;/p&gt;
       <author>Students from M2 Data Science IP Paris</author>
       <guid>http://localhost:1313/posts/packed-ensembles/</guid>
       <pubDate>Tue, 27 Feb 2024 15:05:20 +0100</pubDate>
+    </item>
+    
+    <item>
+      <title>Understanding Visual Feature Reliance through the Lens of Complexity</title>
+      <link>http://localhost:1313/posts/understanding_visual_feature_reliance_through_the_lens_of_complexity/</link>
+      <description>&lt;hr&gt;&lt;/hr&gt;
+&lt;style TYPE=&#34;text/css&#34;&gt;
+code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
+&lt;/style&gt;
+&lt;script type=&#34;text/x-mathjax-config&#34;&gt;
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [[&#39;$&#39;,&#39;$&#39;], [&#39;\\(&#39;,&#39;\\)&#39;]],
+        skipTags: [&#39;script&#39;, &#39;noscript&#39;, &#39;style&#39;, &#39;textarea&#39;, &#39;pre&#39;]
+    }
+});
+&lt;/script&gt;
+&lt;script type=&#34;text/javascript&#34; src=&#34;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML-full&#34;&gt;&lt;/script&gt;
+&lt;h1 style=&#34;font-size: 36px;&#34;&gt;Understanding Visual Feature Reliance through the Lens of Complexity&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Authors: DIB Caren, SABA Jean Paul, WANG Romain&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Article: &lt;a href=&#34;https://proceedings.neurips.cc/paper_files/paper/2024/file/819977c0a95458911bbfd9e5b5115018-Paper-Conference.pdf&#34;&gt;Understanding Visual Feature Reliance through the Lens of Complexity&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&#34;table-of-contents&#34;&gt;Table of Contents&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#introduction&#34;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#feature-complexity-and-v-information&#34;&gt;Feature Complexity and V-Information&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#understanding-the-spectrum-of-simple-to-complex-features&#34;&gt;Understanding the Spectrum of Simple-to-Complex Features&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#feature-learning-dynamics&#34;&gt;Feature Learning Dynamics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#how-complexity-influences-model-decisions&#34;&gt;How Complexity Influences Model Decisions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#conclusion&#34;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;Deep learning models rely on diverse feature sets to make predictions. Recent research highlights a bias towards simpler features, which may contribute to shortcut learning in vision models. However, a rigorous quantitative analysis of feature complexity has been lacking.&lt;/p&gt;
+&lt;p&gt;This blog post explores a new metric based on &lt;strong&gt;V-information&lt;/strong&gt;, a measure that considers computational constraints when quantifying feature complexity. Using this metric, researchers analyzed &lt;strong&gt;10,000 features&lt;/strong&gt; extracted from an ImageNet-trained ResNet50 model to answer the following questions:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;What do features look like across the complexity spectrum?&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;When do simple and complex features emerge during training?&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Where do simple and complex features propagate in a deep network?&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;How does feature complexity influence model decision-making?&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;feature-complexity-and-v-information&#34;&gt;Feature Complexity and V-Information&lt;/h1&gt;
+&lt;p&gt;Feature complexity is traditionally difficult to measure. Standard measures like Shannon’s mutual information do not account for computational effort required to extract a feature. &lt;strong&gt;V-Information&lt;/strong&gt; addresses this by introducing computational constraints:&lt;/p&gt;
+&lt;p&gt;$$
+IV(x \to z) = H_V(z) - H_V(z|x)
+$$&lt;/p&gt;
+&lt;p&gt;Where:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$H_V(z)$ represents the entropy of the feature,&lt;/li&gt;
+&lt;li&gt;$H_V(z|x)$ accounts for the difficulty of extracting the feature from input $x$.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Using this metric, we can evaluate the complexity of features across different layers of a ResNet50 model trained on ImageNet.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;understanding-the-spectrum-of-simple-to-complex-features&#34;&gt;Understanding the Spectrum of Simple-to-Complex Features&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Image placeholder: Visualization of feature complexity spectrum.&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;simple-features&#34;&gt;Simple Features:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Colors (e.g., sky, grass)&lt;/li&gt;
+&lt;li&gt;Low-frequency patterns (e.g., bokeh effects)&lt;/li&gt;
+&lt;li&gt;Edge and texture detectors&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;medium-complexity-features&#34;&gt;Medium-Complexity Features:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Object contours&lt;/li&gt;
+&lt;li&gt;Text-related patterns (e.g., watermarks)&lt;/li&gt;
+&lt;li&gt;Simple shape detectors&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;complex-features&#34;&gt;Complex Features:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Structural components (e.g., insect legs, whiskers)&lt;/li&gt;
+&lt;li&gt;High-level object features (e.g., specific face parts)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These findings align with previous research indicating that deep networks first learn simple patterns before gradually developing complex ones.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;feature-learning-dynamics&#34;&gt;Feature Learning Dynamics&lt;/h1&gt;
+&lt;h3 id=&#34;when-do-complex-features-appear&#34;&gt;When Do Complex Features Appear?&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Image placeholder: Feature evolution across training epochs.&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Early in training, simple features dominate (e.g., color, texture).&lt;/li&gt;
+&lt;li&gt;Complex features emerge later, requiring multiple layers of abstraction.&lt;/li&gt;
+&lt;li&gt;Important features tend to stabilize in earlier layers as training progresses.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This suggests a &lt;strong&gt;“sedimentation process”&lt;/strong&gt; where essential features become more accessible over time.&lt;/p&gt;
+&lt;h3 id=&#34;how-do-simple-features-propagate&#34;&gt;How Do Simple Features Propagate?&lt;/h3&gt;
+&lt;p&gt;Residual connections play a crucial role in maintaining simple features. By analyzing &lt;strong&gt;Centered Kernel Alignment (CKA)&lt;/strong&gt; scores, the study found:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Simple features “teleport”&lt;/strong&gt; through residual connections, remaining unchanged from early to final layers.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Complex features are gradually constructed&lt;/strong&gt; through main computational paths.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This highlights the importance of architectural design in how models manage feature complexity.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;how-complexity-influences-model-decisions&#34;&gt;How Complexity Influences Model Decisions&lt;/h1&gt;
+&lt;h3 id=&#34;the-simplicity-bias&#34;&gt;The Simplicity Bias&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Image placeholder: Complexity vs. importance plot.&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Simpler features are more influential&lt;/strong&gt; in decision-making.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Complex features have lower importance&lt;/strong&gt;, suggesting they are secondary to predictions.&lt;/li&gt;
+&lt;li&gt;As training progresses, &lt;strong&gt;important features become simpler&lt;/strong&gt;, aligning with efficiency principles like Levin’s Universal Search.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This raises an important question: Are models inherently biased towards shortcuts by prioritizing computationally easy features?&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;This study provides new insights into how deep learning models rely on features of varying complexity. Key takeaways:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Deep networks first learn simple features, then complex ones.&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Residual connections ensure simple features remain accessible.&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Complex features are less important for final decisions.&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Models simplify important features over time, following an efficiency principle.&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Understanding these dynamics could help in designing more &lt;strong&gt;robust and interpretable&lt;/strong&gt; deep learning models, mitigating shortcut learning and improving generalization.&lt;/p&gt;
+&lt;p&gt;For more details, check out the full paper: &lt;a href=&#34;https://arxiv.org/abs/your-paper-link&#34;&gt;Understanding Visual Feature Reliance through the Lens of Complexity&lt;/a&gt;.&lt;/p&gt;
+</description>
+      <author>Students from M2 Data Science IP Paris</author>
+      <guid>http://localhost:1313/posts/understanding_visual_feature_reliance_through_the_lens_of_complexity/</guid>
+      <pubDate>Tue, 27 Feb 2024 12:00:00 +0000</pubDate>
     </item>
     
     <item>
