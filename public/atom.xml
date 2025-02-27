@@ -16,7 +16,8 @@
     <item>
       <title>First Post</title>
       <link>http://localhost:1313/posts/first-post/</link>
-      <description></description>
+      <description>&lt;p&gt;Some stupid test post&lt;/p&gt;
+</description>
       <author>Students from M2 Data Science IP Paris</author>
       <guid>http://localhost:1313/posts/first-post/</guid>
       <pubDate>Wed, 05 Feb 2025 14:30:05 +0100</pubDate>
