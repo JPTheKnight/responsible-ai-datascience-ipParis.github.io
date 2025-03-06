@@ -5,27 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Liste - http://localhost:1313/">
-    <title>Understanding Visual Feature Reliance through the Lens of Complexity | Bloggin on Responsible AI</title>
+    <title>Understanding Visual Feature Reliance Through the Lens of Complexity | Bloggin on Responsible AI</title>
     <meta name="description" content="Bloggin on Responsible AI">
     <meta property="og:url" content="http://localhost:1313/posts/understanding_visual_feature_reliance_through_the_lens_of_complexity/">
   <meta property="og:site_name" content="Bloggin on Responsible AI">
-  <meta property="og:title" content="Understanding Visual Feature Reliance through the Lens of Complexity">
+  <meta property="og:title" content="Understanding Visual Feature Reliance Through the Lens of Complexity">
   <meta property="og:description" content="Understanding Visual Feature Reliance through the Lens of ComplexityAuthors: DIB Caren, SABA Jean Paul, WANG Romain
 Article: Understanding Visual Feature Reliance through the Lens of Complexity
 Table of Contents Introduction Feature Complexity and V-Information Understanding the Spectrum of Simple-to-Complex Features Feature Learning Dynamics How Complexity Influences Model Decisions Conclusion 1- Introduction Deep learning models rely on diverse feature sets to make predictions. Recent research highlights a bias towards simpler features, which may contribute to shortcut learning in vision models. However, a rigorous quantitative analysis of feature complexity has been lacking.">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2024-02-27T12:00:00+00:00">
-    <meta property="article:modified_time" content="2024-02-27T12:00:00+00:00">
+    <meta property="article:published_time" content="2025-03-06T16:28:12+01:00">
+    <meta property="article:modified_time" content="2025-03-06T16:28:12+01:00">
 
     
-  <meta itemprop="name" content="Understanding Visual Feature Reliance through the Lens of Complexity">
+  <meta itemprop="name" content="Understanding Visual Feature Reliance Through the Lens of Complexity">
   <meta itemprop="description" content="Understanding Visual Feature Reliance through the Lens of ComplexityAuthors: DIB Caren, SABA Jean Paul, WANG Romain
 Article: Understanding Visual Feature Reliance through the Lens of Complexity
 Table of Contents Introduction Feature Complexity and V-Information Understanding the Spectrum of Simple-to-Complex Features Feature Learning Dynamics How Complexity Influences Model Decisions Conclusion 1- Introduction Deep learning models rely on diverse feature sets to make predictions. Recent research highlights a bias towards simpler features, which may contribute to shortcut learning in vision models. However, a rigorous quantitative analysis of feature complexity has been lacking.">
-  <meta itemprop="datePublished" content="2024-02-27T12:00:00+00:00">
-  <meta itemprop="dateModified" content="2024-02-27T12:00:00+00:00">
+  <meta itemprop="datePublished" content="2025-03-06T16:28:12+01:00">
+  <meta itemprop="dateModified" content="2025-03-06T16:28:12+01:00">
   <meta itemprop="wordCount" content="594">
     
     <link rel="canonical" href="http://localhost:1313/posts/understanding_visual_feature_reliance_through_the_lens_of_complexity/">
@@ -47,8 +47,8 @@ Table of Contents Introduction Feature Complexity and V-Information Understandin
       "@context": "http://schema.org",
       "@type": "BlogPosting",
       "articleSection": "posts",
-      "name": "Understanding Visual Feature Reliance through the Lens of Complexity",
-      "headline": "Understanding Visual Feature Reliance through the Lens of Complexity",
+      "name": "Understanding Visual Feature Reliance Through the Lens of Complexity",
+      "headline": "Understanding Visual Feature Reliance Through the Lens of Complexity",
       "alternativeHeadline": "",
       "description": "\u003chr\u003e\u003c\/hr\u003e\r\n\u003cstyle TYPE=\u0022text\/css\u0022\u003e\r\ncode.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}\r\n\u003c\/style\u003e\r\n\u003cscript type=\u0022text\/x-mathjax-config\u0022\u003e\r\nMathJax.Hub.Config({\r\n    tex2jax: {\r\n        inlineMath: [[\u0027$\u0027,\u0027$\u0027], [\u0027\\\\(\u0027,\u0027\\\\)\u0027]],\r\n        skipTags: [\u0027script\u0027, \u0027noscript\u0027, \u0027style\u0027, \u0027textarea\u0027, \u0027pre\u0027]\r\n    }\r\n});\r\n\u003c\/script\u003e\r\n\u003cscript type=\u0022text\/javascript\u0022 src=\u0022https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/mathjax\/2.7.4\/MathJax.js?config=TeX-AMS_HTML-full\u0022\u003e\u003c\/script\u003e\r\n\u003ch1 style=\u0022font-size: 36px;\u0022\u003eUnderstanding Visual Feature Reliance through the Lens of Complexity\u003c\/h1\u003e\r\n\u003cp\u003e\u003cstrong\u003eAuthors: DIB Caren, SABA Jean Paul, WANG Romain\u003c\/strong\u003e\u003c\/p\u003e\n\u003cp\u003e\u003cstrong\u003eArticle: \u003ca href=\u0022https:\/\/proceedings.neurips.cc\/paper_files\/paper\/2024\/file\/819977c0a95458911bbfd9e5b5115018-Paper-Conference.pdf\u0022\u003eUnderstanding Visual Feature Reliance through the Lens of Complexity\u003c\/a\u003e\u003c\/strong\u003e\u003c\/p\u003e\n\u003ch1 id=\u0022table-of-contents\u0022\u003eTable of Contents\u003c\/h1\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ca href=\u0022#introduction\u0022\u003eIntroduction\u003c\/a\u003e\u003c\/li\u003e\n\u003cli\u003e\u003ca href=\u0022#feature-complexity-and-v-information\u0022\u003eFeature Complexity and V-Information\u003c\/a\u003e\u003c\/li\u003e\n\u003cli\u003e\u003ca href=\u0022#understanding-the-spectrum-of-simple-to-complex-features\u0022\u003eUnderstanding the Spectrum of Simple-to-Complex Features\u003c\/a\u003e\u003c\/li\u003e\n\u003cli\u003e\u003ca href=\u0022#feature-learning-dynamics\u0022\u003eFeature Learning Dynamics\u003c\/a\u003e\u003c\/li\u003e\n\u003cli\u003e\u003ca href=\u0022#how-complexity-influences-model-decisions\u0022\u003eHow Complexity Influences Model Decisions\u003c\/a\u003e\u003c\/li\u003e\n\u003cli\u003e\u003ca href=\u0022#conclusion\u0022\u003eConclusion\u003c\/a\u003e\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003chr\u003e\n\u003ch1 id=\u0022introduction\u0022\u003e1- Introduction\u003c\/h1\u003e\n\u003cp\u003eDeep learning models rely on diverse feature sets to make predictions. Recent research highlights a bias towards simpler features, which may contribute to shortcut learning in vision models. However, a rigorous quantitative analysis of feature complexity has been lacking.\u003c\/p\u003e",
       "inLanguage": "en-us",
@@ -70,10 +70,10 @@ Table of Contents Introduction Feature Complexity and V-Information Understandin
           "name": ""
       },
       "copyrightHolder" : "Bloggin on Responsible AI",
-      "copyrightYear" : "2024",
-      "dateCreated": "2024-02-27T12:00:00.00Z",
-      "datePublished": "2024-02-27T12:00:00.00Z",
-      "dateModified": "2024-02-27T12:00:00.00Z",
+      "copyrightYear" : "2025",
+      "dateCreated": "2025-03-06T16:28:12.00Z",
+      "datePublished": "2025-03-06T16:28:12.00Z",
+      "dateModified": "2025-03-06T16:28:12.00Z",
       "publisher":{
           "@type":"Organization",
           "name": "Bloggin on Responsible AI",
@@ -127,7 +127,7 @@ Table of Contents Introduction Feature Complexity and V-Information Understandin
 </header>
 <hr class="hr-list" style="padding: 0;margin: 0;">
     <section>
-      <h2 class="post">Understanding Visual Feature Reliance through the Lens of Complexity</h2>
+      <h2 class="post">Understanding Visual Feature Reliance Through the Lens of Complexity</h2>
       <hr></hr>
 <style TYPE="text/css">
 code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
@@ -237,7 +237,7 @@ $$</p>
 
       
       <div class="post-date">
-        <span class="g time">February 27, 2024 </span> &#8729;
+        <span class="g time">March 6, 2025 </span> &#8729;
          
       </div>
       

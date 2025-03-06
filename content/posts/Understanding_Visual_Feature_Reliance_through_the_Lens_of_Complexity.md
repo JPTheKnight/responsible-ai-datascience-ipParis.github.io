@@ -1,6 +1,6 @@
 +++
-title = 'Understanding Visual Feature Reliance through the Lens of Complexity'
-date = 2024-02-27T12:00:00+00:00
+title = 'Understanding Visual Feature Reliance Through the Lens of Complexity'
+date = 2025-03-06T16:28:12+01:00
 draft = false
 +++
 
