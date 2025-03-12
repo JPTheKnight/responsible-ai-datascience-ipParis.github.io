@@ -7,19 +7,174 @@
     
     <language>en</language>
     <copyright>Copyright 2025, Calvin Tran</copyright>
-    <lastBuildDate>Thu, 06 Mar 2025 16:28:12 +0100</lastBuildDate>
+    <lastBuildDate>Wed, 12 Mar 2025 16:28:12 +0100</lastBuildDate>
     <generator>Hugo - gohugo.io</generator>
     <docs>http://cyber.harvard.edu/rss/rss.html</docs>
     <atom:link href="http://localhost:1313//atom.xml" rel="self" type="application/atom+xml"/>
     
     
     <item>
-      <title>Understanding_Visual_Feature_Reliance_Through_the_Lens_of_Complexity</title>
+      <title>Understanding Visual Feature Reliance Through the Lens of Complexity</title>
       <link>http://localhost:1313/posts/understanding_visual_feature_reliance_through_the_lens_of_complexity/</link>
-      <description></description>
+      <description>&lt;hr&gt;&lt;/hr&gt;
+&lt;style TYPE=&#34;text/css&#34;&gt;
+code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
+&lt;/style&gt;
+&lt;script type=&#34;text/x-mathjax-config&#34;&gt;
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [[&#39;$&#39;,&#39;$&#39;], [&#39;\$&#39;,&#39;\$&#39;]],
+        skipTags: [&#39;script&#39;, &#39;noscript&#39;, &#39;style&#39;, &#39;textarea&#39;, &#39;pre&#39;]
+    }
+});
+&lt;/script&gt;
+&lt;script type=&#34;text/javascript&#34; src=&#34;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML-full&#34;&gt;&lt;/script&gt;
+&lt;h1 style=&#34;font-size: 36px;&#34;&gt;Understanding Visual Feature Reliance through the Lens of Complexity&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Authors: DIB Caren, SABA Jean Paul, WANG Romain&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Article: &lt;a href=&#34;https://proceedings.neurips.cc/paper_files/paper/2024/file/819977c0a95458911bbfd9e5b5115018-Paper-Conference.pdf&#34;&gt;Understanding Visual Feature Reliance through the Lens of Complexity&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&#34;table-of-contents&#34;&gt;Table of Contents&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#introduction&#34;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#feature-extraction&#34;&gt;Feature Extraction via Dictionary Learning&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#detecting-complexity&#34;&gt;Detecting Complexity&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#redundancy&#34;&gt;Relations with Redundancy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#robustness&#34;&gt;Relations with Robustness&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#importance&#34;&gt;Importance Measure&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#replication&#34;&gt;Feature Flow and Information Theory&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#experimenting&#34;&gt;Experimenting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#conclusion&#34;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;introduction&#34;&gt;1. Introduction&lt;/h1&gt;
+&lt;p&gt;In this blog, we’ll take a deep dive into an insightful and thought-provoking paper authored by Thomas Fel, Louis Béthune, Andrew Kyle Lampinen, Thomas Serre, and Katherine Hermann. Their work explores the intricate mechanisms underlying how deep neural networks—specifically ResNet50—learn and represent complex features. This research, rooted in both theoretical and empirical analysis, investigates the nature of feature complexity, how features evolve over the course of training, and the computational structures that enable neural networks to generalize effectively.&lt;/p&gt;
+&lt;p&gt;The authors&amp;rsquo; central motivation is to understand how models balance computational efficiency with representational richness. They explore why deep networks exhibit a preference for simpler features (simplicity bias), how complex features are supported within a network, and the trade-offs between redundancy, robustness, and importance of these features. V-information serves as the main complexity metric used throughout their study, offering a principled approach to quantifying how computationally accessible features are. In addition to V-information, they employ several other quantitative measures—such as importance scores derived from Gradient × Input, and redundancy and robustness metrics informed by prior work—to provide an exhaustive and structured analysis of feature learning dynamics.&lt;/p&gt;
+&lt;p&gt;Their findings have implications for model interpretability, robustness, and generalization, offering deep insights into the practical and theoretical aspects of modern deep learning systems. In this blog, we break down their study into a comprehensive guide for easier understanding.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;feature-extraction&#34;&gt;2. Feature Extraction and Visualization&lt;/h1&gt;
+&lt;p&gt;In this section, the authors explore the nature and diversity of features learned by the network. First, some general information:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Simple Features&lt;/strong&gt;: These are easy-to-decode, frequently occurring concepts like &lt;em&gt;sky&lt;/em&gt;, &lt;em&gt;grass&lt;/em&gt;, and &lt;em&gt;watermarks&lt;/em&gt;. They typically emerge early in the network and are transported through residual connections with little modification. Such features are aligned with simplicity bias and often serve as shortcuts for the model.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Medium Complexity Features&lt;/strong&gt;: These include concepts like &lt;em&gt;human-related elements&lt;/em&gt;, &lt;em&gt;low-pixel quality detectors&lt;/em&gt;, and &lt;em&gt;trademarks&lt;/em&gt;. They often represent slightly more abstract or nuanced properties and require more layers and computational effort to emerge.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Complex Features&lt;/strong&gt;: Highly intricate concepts like &lt;em&gt;insect legs&lt;/em&gt;, &lt;em&gt;whiskers&lt;/em&gt;, and &lt;em&gt;filament structures&lt;/em&gt; represent the most complex features. These require extensive processing across multiple layers and involve both the main and residual network branches to form progressively.&lt;/p&gt;
+&lt;p&gt;To be able to extract those features, the authors introduced an overcomplete dictionary as a solution to a key challenge in understanding deep neural networks: &lt;strong&gt;the superposition problem&lt;/strong&gt;, where multiple features are entangled within single neurons, making it difficult to isolate and analyze individual features. In standard neural networks, activations $ f_n(x) $ in the penultimate layer represent complex, often overlapping features, and the number of distinct features may far exceed the number of neurons $ |A_\ell| $. To address this, the authors leveraged dictionary learning to build an overcomplete dictionary $ D^* $, where $ k \gg |A_\ell| $, allowing them to extract a richer set of disentangled features—up to 10,000, far more than the neuron count.&lt;/p&gt;
+&lt;p&gt;Each activation $f_n(x)$ is approximated as a linear combination of atoms from the overcomplete dictionary $D^*$, weighted by sparse coefficients $z$:&lt;/p&gt;
+&lt;p&gt;$$
+f_n(x) \approx z D^* = \sum_{i=1}^k z_i d_i
+$$&lt;/p&gt;
+&lt;p&gt;This overcomplete setup allows for disentangling features beyond what individual neurons can represent. The dictionary $D^*$ is learned using Non-Negative Matrix Factorization (NMF), which aligns with the non-negative nature of ReLU activations. The optimization minimizes reconstruction error with non-negativity constraints:&lt;/p&gt;
+&lt;p&gt;$$
+(Z, D^*) = \arg \min_{Z \ge 0, D^* \ge 0} | f_n(X) - Z D^* |_F
+$$&lt;/p&gt;
+&lt;p&gt;Trained on ImageNet with 58 million samples, the dictionary preserves over 99% of the model’s predictive accuracy. Once $D^*$ is fixed, features for new inputs are extracted by solving:&lt;/p&gt;
+&lt;p&gt;$$
+z = \arg \min_{z \ge 0} | f_n(x) - z D^* |_F
+$$&lt;/p&gt;
+&lt;p&gt;The authors used MACO, an advanced feature visualization technique, to produce clearer and more realistic images of the network’s learned features. These visualizations are sorted by complexity, from the simplest to the most complex features, highlighting the increasing detail and intricacy as complexity grows.&lt;/p&gt;
+&lt;p&gt;&lt;img
+  src=&#34;./images/JeanPaul_Saba/VIZ.png&#34;
+  alt=&#34;Meta-Feature Visualization&#34;
+  loading=&#34;lazy&#34;
+  decoding=&#34;async&#34;
+  class=&#34;full-width&#34;
+/&gt;
+
+
+&lt;em&gt;Caption: Feature Viz using MACO&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img
+  src=&#34;./images/JeanPaul_Saba/UMAP.png&#34;
+  alt=&#34;UMAP Visualization&#34;
+  loading=&#34;lazy&#34;
+  decoding=&#34;async&#34;
+  class=&#34;full-width&#34;
+/&gt;
+
+
+&lt;em&gt;Caption: Feature complexity using UMAP&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;detecting-complexity&#34;&gt;3. Detecting Complexity&lt;/h1&gt;
+&lt;p&gt;The authors propose &lt;strong&gt;V-information&lt;/strong&gt; as their primary metric to quantify feature complexity. They focus on a setting where the predictive family $V$ consists of linear classifiers with Gaussian posteriors. In this context, V-information measures how much information a representation $x$ provides about a feature $z$ under computational constraints. The authors derive a closed-form solution for V-information when $V$ consists of these linear Gaussian models:&lt;/p&gt;
+&lt;p&gt;$$
+I_V(x \to z) = H_V(z) - H_V(z|x)
+$$&lt;/p&gt;
+&lt;p&gt;Which leads to having:&lt;/p&gt;
+&lt;p&gt;$$
+0 \le I_V(x \to z) \le \text{Var}(z)
+$$&lt;/p&gt;
+&lt;p&gt;Since the input data are centered and scaled, $\text{Var}(z)$ is typically close to 1. The authors define feature complexity $K(z, x)$ as the inverse of the average V-information across network layers, quantifying how difficult it is to decode a feature as it propagates through the network:&lt;/p&gt;
+&lt;p&gt;$$
+K(z, x) = 1 - \frac{1}{n} \sum_{\ell=1}^{n} I_V(f_\ell(x) \to z)
+$$&lt;/p&gt;
+&lt;p&gt;They note that a higher $K(z, x)$ score indicates a more complex feature, harder to decode until later in the model. Empirically, they observed that $K(z, x)$ generally falls within $[0, 1]$, with 1 representing high complexity.&lt;/p&gt;
+&lt;h2 id=&#34;redundancy&#34;&gt;3.1. Relations with Redundancy&lt;/h2&gt;
+&lt;p&gt;To explore the relationship between complexity and redundancy, the authors employed a redundancy measure based on &lt;strong&gt;Centered Kernel Alignment (CKA)&lt;/strong&gt;. In their analysis, they compared the similarity between a feature $z$ and the network activations $f_n(X)$, both before and after masking parts of the activations. If masking neurons didn’t change the similarity much, it meant the feature was redundant, spread over many neurons. If the similarity dropped a lot, the feature was localized, relying on fewer neurons. The redundancy score was calculated as:&lt;/p&gt;
+&lt;p&gt;$$
+\text{Redundancy} = \mathbb{E}_m \left[ \frac{CKA(f_n(X) \odot m, z)}{CKA(f_n(X), z)} \right]
+$$&lt;/p&gt;
+&lt;p&gt;Where:&lt;/p&gt;
+&lt;p&gt;$$
+\text{CKA}(A, B) = \frac{|K_A K_B|_F^2}{|K_A K_A|_F \cdot |K_B K_B|_F}
+$$&lt;/p&gt;
+&lt;p&gt;They found that &lt;strong&gt;complex features are less redundant&lt;/strong&gt;, meaning they depend on specific neurons and are more fragile.&lt;/p&gt;
+&lt;h2 id=&#34;robustness&#34;&gt;3.2. Complexity and Robustness&lt;/h2&gt;
+&lt;p&gt;The authors also investigated how feature complexity relates to robustness. They found that complex features are less robust, meaning they are more sensitive to input perturbations.&lt;/p&gt;
+&lt;p&gt;They quantified robustness by measuring the variance in a feature’s response $z(x)$ when the input $x$ was perturbed with Gaussian noise. For each input, they generated perturbed versions:&lt;/p&gt;
+&lt;p&gt;$$
+\tilde{x} = x + \mathcal{N}(0, \sigma^2 I)
+$$&lt;/p&gt;
+&lt;p&gt;and computed the sensitivity score as the variance of $z(\tilde{x})$:&lt;/p&gt;
+&lt;p&gt;$$
+\text{Sensitivity}(z) = \text{Var}(z(\tilde{x}))
+$$&lt;/p&gt;
+&lt;p&gt;They tested this over 100 noise samples and three noise levels $\sigma \in {0.01, 0.1, 0.5}$ across 2,000 validation images. Regardless of the metric used (variance or range), complex features consistently showed higher sensitivity to noise. This suggests complex features are more fragile and less robust compared to simpler ones.&lt;/p&gt;
+&lt;h2 id=&#34;importance&#34;&gt;3.3. Importance Measure&lt;/h2&gt;
+&lt;p&gt;By trying to find a relation with the importance of the features, the authors focused on the penultimate layer of the network, where the extracted features $z$ are directly connected to the logits $y$. A logit is the raw output of the model before applying softmax to get class probabilities. It represents the model’s confidence for each class.&lt;/p&gt;
+&lt;p&gt;To measure how much each feature $z_i$ influences the logit $y$, the authors used the Gradient × Input method. Specifically, they computed:&lt;/p&gt;
+&lt;p&gt;$$
+\Gamma(z_i) = \mathbb{E} \left[ \left| \frac{\partial y}{\partial z_i} \cdot z_i \right| \right]
+$$&lt;/p&gt;
+&lt;p&gt;This gives the importance score for each feature, showing how sensitive the model&amp;rsquo;s output is to changes in $z_i$. A higher score means the feature has a bigger impact on the prediction.&lt;/p&gt;
+&lt;p&gt;The authors found that simple features often have higher importance scores. These features are more directly used by the network to make decisions. On the other hand, complex features tend to have lower direct importance but may still play &lt;strong&gt;supporting roles&lt;/strong&gt; in the model’s reasoning.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;replication&#34;&gt;4. Feature Flow and Information Theory&lt;/h1&gt;
+&lt;p&gt;The authors validated their hypothesis on how simple and complex features propagate through neural networks by replicating their earlier analysis with a different complexity measure. While they initially used Centered Kernel Alignment (CKA), they later confirmed their findings with &lt;strong&gt;V-Information&lt;/strong&gt;, their primary complexity metric.
+The results were consistent: simple features showed high V-Information early and were efficiently passed through residual connections, while complex features accumulated V-Information gradually, being constructed layer by layer. This replication, done with a different ResNet50 model (Keras) and on ImageNet validation data, reinforced the idea that complex features are built progressively rather than carried intact through the network.&lt;/p&gt;
+&lt;p&gt;The authors then connected their empirical findings to concepts from algorithmic information theory, particularly &lt;strong&gt;Kolmogorov Complexity&lt;/strong&gt; and &lt;strong&gt;Levin Complexity&lt;/strong&gt;, to offer a theoretical foundation for their observations.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Kolmogorov Complexity&lt;/strong&gt; measures the length of the shortest program capable of producing a given output sequence $(u_n)$ over some finite alphabet $\Sigma$:&lt;/p&gt;
+&lt;p&gt;$$
+K^{(\infty)}_L(u_n) = \min_{P(n) = u_n} |P|
+$$&lt;/p&gt;
+&lt;p&gt;Intuitively, sequences that follow simple patterns (like $1, 2, 3, 4, &amp;hellip;$) have low Kolmogorov complexity because they can be described by a short program. Conversely, truly random sequences have high complexity because they lack shorter descriptions. While Kolmogorov complexity captures an idealized notion of simplicity, it is not computable—there’s no general algorithm that can calculate it.&lt;/p&gt;
+&lt;p&gt;To make this concept tractable, &lt;strong&gt;Levin Complexity&lt;/strong&gt; was introduced. Levin adds a penalty based on the runtime of the program, balancing the program’s length and the time it takes to run:&lt;/p&gt;
+&lt;p&gt;$$
+K^{(T)}_L(u_n) = \min_{P(n) = u_n} |P| + \log |\Sigma| \cdot T(P, n)
+$$&lt;/p&gt;
+&lt;p&gt;Here, $T(P, n)$ represents the time the program $$P$$ takes to compute $u_n$. This makes it possible to compute Levin complexity through Levin Universal Search, an algorithm that runs all programs of increasing length in parallel, for one step at a time, until one halts and produces the output:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Algorithm 1 : Levin Universal Search
+Input: sequence (u_n) ∈ Σ*
+Output: program P minimizing K(T)_L
+1: S ← ∅
+2: for i ∈ N do
+3:     for each program P ∈ (Σ^i ∩ L) do
+4:         S ← S ∪ {P}
+5:     for each P ∈ S in parallel do
+6:         Run P for exactly 1 step
+7:         if P halts on u_n then
+8:             return P
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This algorithm tends to find the simplest and fastest programs first, illustrating a simplicity bias: simpler solutions are discovered before more complex ones.&lt;/p&gt;
+&lt;p&gt;The authors argue that deep learning models exhibit a similar simplicity bias. Neural networks are effectively programs composed of weights and computations. Features that are decoded early in the network—those requiring fewer layers and simpler computation—are analogous to low Kolmogorov or Levin complexity. Features that require deeper, more complex computations align with higher complexity measures.&lt;/p&gt;
+&lt;p&gt;Their &lt;strong&gt;V-Information&lt;/strong&gt; metric formalizes this intuition. It quantifies how much useful information about a feature $z$ can be extracted from an input $x$ at different layers of the network:&lt;/p&gt;
+&lt;p&gt;$$
+I_V(x \rightarrow z) = H_V(z) - H_V(z | x)
+$$&lt;/p&gt;
+&lt;p&gt;A higher V-Information indicates a feature is easier to decode (simpler), while lower V-Information implies a feature is harder to access and thus more complex. This mirrors the relationship between program length and runtime in Kolmogorov and Levin complexities.&lt;/p&gt;
+&lt;h1 id=&#34;5-experimenting&#34;&gt;5. Experimenting&lt;/h1&gt;
+&lt;h1 id=&#34;6-conclusion&#34;&gt;6. Conclusion&lt;/h1&gt;
+</description>
       <author>Students from M2 Data Science IP Paris</author>
       <guid>http://localhost:1313/posts/understanding_visual_feature_reliance_through_the_lens_of_complexity/</guid>
-      <pubDate>Thu, 06 Mar 2025 16:28:12 +0100</pubDate>
+      <pubDate>Wed, 12 Mar 2025 16:28:12 +0100</pubDate>
     </item>
     
     <item>
