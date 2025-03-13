@@ -35,7 +35,9 @@ MathJax.Hub.Config({
   - [Relations with Robustness](#robustness)
   - [Importance Measure](#importance)
 - [Feature Flow and Information Theory](#replication)
-- [Experimenting](#experimenting)
+- [Experiment Summary: Exploring Feature Complexity in ResNet18](#experimenting)
+  - [How the Code Was Structured and What Was Done](#experiment_1)
+  - [Experiment Results and Interpretation](#experiment_2)
 - [Conclusion](#conclusion)
 
 ---
@@ -98,7 +100,7 @@ $$
 I_V(x \to z) = H_V(z) - H_V(z|x)
 $$
 
-Here, $H_V(z)$ represents the **V-entropy**, which measures the uncertainty about $z$ when using the best possible predictor from the restricted family $V$. Similarly, $H_V(z|x)$ is the **V-conditional entropy**, which measures the remaining uncertainty about $z$ after observing $x$, again under the constraint of using predictors from $V$.
+Here, $H_V(z)$ represents the V-entropy, which measures the uncertainty about $z$ when using the best possible predictor from the restricted family $V$. Similarly, $H_V(z|x)$ is the V-conditional entropy, which measures the remaining uncertainty about $z$ after observing $x$, again under the constraint of using predictors from $V$.
 
 Which leads to having:
 
@@ -185,7 +187,7 @@ $$
 K^{(T)}\_L(u_n) = \min_{P(n) = u_n} |P| + \log |\Sigma| \cdot T(P, n)
 $$
 
-Here, $T(P, n)$ represents the time the program $$P$$ takes to compute $u_n$. This makes it possible to compute Levin complexity through Levin Universal Search, an algorithm that runs all programs of increasing length in parallel, for one step at a time, until one halts and produces the output:
+Here, $T(P, n)$ represents the time the program $P$ takes to compute $u_n$. This makes it possible to compute Levin complexity through Levin Universal Search, an algorithm that runs all programs of increasing length in parallel, for one step at a time, until one halts and produces the output:
 
 ```
 Algorithm 1 : Levin Universal Search
@@ -213,6 +215,52 @@ $$
 
 A higher V-Information indicates a feature is easier to decode (simpler), while lower V-Information implies a feature is harder to access and thus more complex. This mirrors the relationship between program length and runtime in Kolmogorov and Levin complexities.
 
-# 5. Experimenting
+---
 
-# 6. Conclusion
+# 5. Experiment Summary: Exploring Feature Complexity in ResNet18{#experiment}
+
+In this experiment, we set out to explore how complex and simple features are learned and represented in a deep convolutional neural network, specifically using **ResNet18** trained on **CIFAR-10**. The goal was to understand feature complexity, redundancy, robustness, and importance, similar to the methods and insights presented in the research paper.
+
+## 5.1. How the Code Was Structured and What Was Done{#experiment_1}
+
+In this experiment, we worked with the CIFAR-10 dataset, which contains 60,000 color images across 10 classes, such as airplanes, cars, and birds. We split the dataset into training and validation sets and normalized the images for consistent input.
+
+We trained a ResNet18 model from scratch on CIFAR-10 over 5 epochs using Stochastic Gradient Descent (SGD) and cross-entropy loss. The trained model achieved reasonable accuracy, making it suitable for analyzing feature representations.
+
+After training, we extracted features from the penultimate layer and pre-pooling feature maps, which capture high-level concepts learned by the network. To further analyze these features, we applied Non-Negative Matrix Factorization (NMF), creating an overcomplete dictionary that helped disentangle individual features and overcome the issue of feature superposition.
+
+We computed V-Information scores to measure the complexity of each feature, showing how difficult they are to decode at different layers of the network. In addition, we analyzed feature importance through logistic regression, assessed redundancy by examining feature correlations, and measured robustness by testing feature stability under noise perturbations.
+
+Finally, we visualized the features using UMAP, projecting them into 2D space to reveal clusters based on complexity and semantic similarity. HDBSCAN clustering helped identify groups of related features, offering insights into their complexity and roles in the network’s decision-making process.
+
+## 5.2. Experiment Results and Interpretation{#experiment_2}
+
+1. We plotted the features using **UMAP** and colored them by their **complexity scores** (based on V-Information).
+
+![Feature Complexity UMAP](/images/JeanPaul_Saba/experimentUMAPlabeled.png)
+_Caption: UMAP representation of the Features' Complexity on CIFAR10 Dataset_
+
+![Examples Of Clusters](/images/JeanPaul_Saba/clusters.png)
+_Caption: Clusters that are labeled on the UMAP Map_
+
+By applying V-Information, we clustered features based on their complexity, and visualized them using UMAP. In the second UMAP plot (Figure 2), we see clear groupings: clusters with images of planes, cars, and sky are associated with low complexity. These images are simple, with uniform regions and clear shapes, making them easier to process for the model.
+
+In contrast, clusters labeled Animals, Deers, and Horses contain high complexity images. These images feature more visual detail, like fur, leaves, and branches, which require deeper processing and more complex feature representations.
+
+Even with CIFAR-10’s low-resolution, the network distinguishes simple from complex features effectively. Images dominated by sky are less complex, while those with animals and rich textures show up as more complex in both the V-Information measure and the UMAP clustering.
+
+2. After analyzing the UMAP, we plotted how feature complexity relates to feature importance for classification.
+
+![Complexity vs Importance](/images/JeanPaul_Saba/complexityVSimportance.png)
+
+In our experiment, we plotted the relationship between feature complexity and importance to investigate how these two properties interact within the network. The scatter plot shows each feature as a blue dot, with complexity on the x-axis (measured by V-Information) and importance on the y-axis (derived from a logistic regression model trained on the features). We also added a red regression line to highlight the overall trend.
+
+From this visualization, we found a slight negative correlation between complexity and importance. This means that simpler features, which are easier for the network to decode, tend to have higher importance in the model’s decisions. On the other hand, more complex features, which require deeper computation and are harder to extract, tend to have lower importance on their own. This result supports the findings in the paper, which argue that neural networks exhibit a simplicity bias, relying more heavily on simpler, easily accessible features during inference.
+
+# 6. Conclusion {#conclusion}
+
+In this work, we explored the concept of feature complexity in deep neural networks, based on the paper _"Understanding Visual Feature Reliance through the Lens of Complexity."_ The authors introduced V-Information as a metric to measure how accessible and complex a feature is within a model. Their findings highlight a simplicity bias in networks, where simpler features are prioritized due to their ease of extraction, robustness, and importance for decision-making.
+
+In our experiment with ResNet18 on CIFAR-10, we replicated key aspects of their methodology. Using NMF and V-Information, we analyzed feature complexity and visualized the feature space with UMAP and HDBSCAN clustering. Our results showed that simple features, such as planes and skies, clustered together and had lower complexity, while more detailed images, like animals, exhibited higher complexity. We also observed a slight negative correlation between feature complexity and importance, reinforcing the idea that networks rely more on simple features.
+
+Overall, our experiments support the paper’s conclusions: deep networks tend to favor simple, robust features while complex ones play a secondary, less stable role in the decision process.
