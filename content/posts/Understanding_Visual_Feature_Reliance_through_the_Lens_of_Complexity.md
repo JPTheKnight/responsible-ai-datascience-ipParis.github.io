@@ -35,7 +35,7 @@ MathJax.Hub.Config({
   - [Relations with Robustness](#robustness)
   - [Importance Measure](#importance)
 - [Feature Flow and Information Theory](#replication)
-- [Experiment Summary: Exploring Feature Complexity in ResNet18](#experimenting)
+- [Experiment Summary: Exploring Feature Complexity in ResNet18](#experiment)
   - [How the Code Was Structured and What Was Done](#experiment_1)
   - [Experiment Results and Interpretation](#experiment_2)
 - [Conclusion](#conclusion)
