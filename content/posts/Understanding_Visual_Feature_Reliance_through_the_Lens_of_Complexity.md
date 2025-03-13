@@ -60,7 +60,7 @@ In this section, the authors explore the nature and diversity of features learne
 
 **Complex Features**: Highly intricate concepts like _insect legs_, _whiskers_, and _filament structures_ represent the most complex features. These require extensive processing across multiple layers and involve both the main and residual network branches to form progressively.
 
-To be able to extract those features, the authors introduced an overcomplete dictionary as a solution to a key challenge in understanding deep neural networks: **the superposition problem**, where multiple features are entangled within single neurons, making it difficult to isolate and analyze individual features. In standard neural networks, activations $ f_n(x) $ in the penultimate layer represent complex, often overlapping features, and the number of distinct features may far exceed the number of neurons $ |A\_\ell| $. To address this, the authors leveraged dictionary learning to build an overcomplete dictionary $ D^\* $, where $ k \gg |A\_\ell| $, allowing them to extract a richer set of disentangled features—up to 10,000, far more than the neuron count.
+To be able to extract those features, the authors introduced an overcomplete dictionary as a solution to a key challenge in understanding deep neural networks: **the superposition problem**, where multiple features are entangled within single neurons, making it difficult to isolate and analyze individual features. In standard neural networks, activations $f_n(x)$ in the penultimate layer represent complex, often overlapping features, and the number of distinct features may far exceed the number of neurons $|A_\ell|$. To address this, the authors leveraged dictionary learning to build an overcomplete dictionary $D^*$, where $k \gg |A_\ell|$, with $k$ representing the number of atoms (or basis elements) in the dictionary. This allowed them to extract a richer set of disentangled features—up to 10,000, far more than the neuron count.
 
 Each activation $f_n(x)$ is approximated as a linear combination of atoms from the overcomplete dictionary $D^\*$, weighted by sparse coefficients $z$:
 
@@ -98,6 +98,8 @@ $$
 I_V(x \to z) = H_V(z) - H_V(z|x)
 $$
 
+Here, $H_V(z)$ represents the **V-entropy**, which measures the uncertainty about $z$ when using the best possible predictor from the restricted family $V$. Similarly, $H_V(z|x)$ is the **V-conditional entropy**, which measures the remaining uncertainty about $z$ after observing $x$, again under the constraint of using predictors from $V$.
+
 Which leads to having:
 
 $$
@@ -114,7 +116,7 @@ They note that a higher $K(z, x)$ score indicates a more complex feature, harder
 
 ## 3.1. Relations with Redundancy{#redundancy}
 
-To explore the relationship between complexity and redundancy, the authors employed a redundancy measure based on **Centered Kernel Alignment (CKA)**. In their analysis, they compared the similarity between a feature $z$ and the network activations $f_n(X)$, both before and after masking parts of the activations. If masking neurons didn’t change the similarity much, it meant the feature was redundant, spread over many neurons. If the similarity dropped a lot, the feature was localized, relying on fewer neurons. The redundancy score was calculated as:
+To explore the relationship between complexity and redundancy, the authors employed a redundancy measure based on **Centered Kernel Alignment (CKA)**. In their analysis, they compared the similarity between a feature $z$ and the network activations $f_n(X)$, both before and after masking parts of the activations. A **binary mask $m$** was applied to the activations, where $m \in \{0,1\}^{|A_\ell|}$ selects which neurons remain active (1) and which are deactivated (0). If masking neurons didn’t change the similarity much, it meant the feature was redundant, spread over many neurons. If the similarity dropped a lot, the feature was localized, relying on fewer neurons. The redundancy score was calculated as:
 
 $$
 \text{Redundancy} = \mathbb{E}_m \left[ \frac{CKA(f_n(X) \odot m, z)}{CKA(f_n(X), z)} \right]
